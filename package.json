@@ -1,0 +1,23 @@
+{
+  "name": "planning-benevoles-spa-refuge",
+  "version": "1.0.0",
+  "description": "Les bénévoles ajoutent leur nom et le motif dans une cellule. Par exemple, *Tartempion, balades chiens*.\r Un accès en écriture est nécessaire pour les bénévoles.\r Les feuilles et les dates se mettent à jour automatiquement.\r Projet **Google Apps Script** lié à un **Google Sheet**, versionné avec **GitHub** via **CLASP**.",
+  "main": "CONFIGURATION.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0-F/planning-benevoles-SPA-refuge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/0-F/planning-benevoles-SPA-refuge/issues"
+  },
+  "homepage": "https://github.com/0-F/planning-benevoles-SPA-refuge#readme",
+  "devDependencies": {
+    "@types/google-apps-script": "^2.0.8"
+  }
+}
