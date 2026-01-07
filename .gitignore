@@ -9,6 +9,7 @@ yarn-error.log*
 
 # ===== CLASP =====
 .clasp.json
+.clasp.*.json
 
 # ===== Google Apps Script =====
 # Fichiers temporaires ou de sauvegarde
