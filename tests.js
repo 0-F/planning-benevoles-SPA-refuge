@@ -26,6 +26,15 @@ const TEST_CONFIG = {
  *************************************************/
 
 function _runAllTests() {
+  if (PropertiesService.getScriptProperties().getProperty('ENV') !== "test") {
+    throw new Error("L'environnement sélectionné n'est pas un environnement de test. Ajoutez une propriétés du script `ENV` avec la valeur `test`.");
+  }
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet()
+
+  ss.getSheetByName(CFG.templateSheetName).showSheet();
+  ss.getSheetByName(FEUILLE_CONFIGURATION).showSheet();
+
   const tests = [
     test_getIsoWeekInfo,
     test_sheetExists,
