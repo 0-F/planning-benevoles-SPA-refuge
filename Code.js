@@ -1,7 +1,7 @@
-CLEANUP_SHEETS = false; // Laisser à `false` en production !
+const CLEANUP_SHEETS = false; // Laisser à `false` en production !
 
 function creeFeuillesDesSemaines() {
-  if (CLEANUP_SHEETS === true) {
+  if (CLEANUP_SHEETS) {
     cleanupSheets();
   }
 

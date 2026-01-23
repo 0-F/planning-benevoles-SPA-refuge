@@ -1,13 +1,24 @@
+/**
+ * @param {string} label
+ * @param {{ dateFormat: any; templateSheetName: any; dayRange: any; dateRange: any; weeksToCreate: any; }} obj
+ */
 function logObject(label, obj) {
   Logger.log(`${label}:\n${JSON.stringify(obj, null, 2)}`);
 }
 
+/**
+ * @param {string} template
+ * @param {{ [x: string]: any; SEMAINE?: number; AAAA?: number; }} variables
+ */
 function interpolate(template, variables) {
-  return template.replace(/{{(\w+)}}/g, (_, key) =>
+  return template.replace(/{{(\w+)}}/g, (/** @type {any} */ _, /** @type {string | number} */ key) =>
     variables[key] ?? ""
   );
 }
 
+/**
+ * @param {string | number | Date} date
+ */
 function getISOYearAndWeek(date) {
   const d = new Date(date);
   d.setHours(0, 0, 0, 0);
@@ -17,7 +28,7 @@ function getISOYearAndWeek(date) {
 
   const isoYear = d.getFullYear();
   const week1 = new Date(isoYear, 0, 4);
-  const isoWeek = 1 + Math.round(((d - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+  const isoWeek = 1 + Math.round(((d.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
 
   return { isoYear, isoWeek };
 }
@@ -33,6 +44,7 @@ function getConfiguration() {
   // retrieve configuration values
   const dateFormat = getValueFromID(ID.FORMAT_DATE);
   const templateName = getValueFromID(ID.NOM_MODELE);
+  const dayRange = getValueFromID(ID.PLAGE_JOURS);
   const dateRange = getValueFromID(ID.PLAGE_DATES);
   const weeksToCreate = getValueFromID(ID.NB_SEMAINES);
 
@@ -45,11 +57,15 @@ function getConfiguration() {
   return {
     dateFormat: dateFormat.value,
     templateSheetName: templateName.value,
+    dayRange: dayRange.value,
     dateRange: dateRange.value,
     weeksToCreate: weeksToCreate.value
   };
 }
 
+/**
+ * @param {string} id
+ */
 function getValueFromID(id) {
   const COLUMN_C = 3;
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -84,9 +100,15 @@ function cleanupSheets() {
   });
 }
 
+/**
+ * Remplace les placeholders {{key}} dans une feuille par les valeurs fournies.
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet
+ * @param {{ [s: string]: any; } | ArrayLike<any>} valuesMap
+ * @returns {void}
+ */
 function replacePlaceholdersInSheet(sheet, valuesMap) {
   if (!sheet) {
-    throw new Error(`Sheet "${sheetName}" not found`);
+    throw new Error(`Sheet ${sheet.getName()} not found`);
   }
 
   Object.entries(valuesMap).forEach(([key, value]) => {
@@ -108,6 +130,7 @@ function duplicateTemplateSheet() {
 
 /**
  * Renvoie `true` si la feuille existe.
+ * @param {string} sheetName
  */
 function sheetExists(sheetName) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -116,6 +139,8 @@ function sheetExists(sheetName) {
 
 /**
  * Fusionne la première feuille dans la deuxième.
+ * @param {string} srcName
+ * @param {string} dstName
  */
 function mergeSheets(srcName, dstName) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
