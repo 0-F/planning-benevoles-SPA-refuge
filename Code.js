@@ -158,3 +158,35 @@ function cacheFeuillesProtegees() {
     }
   });
 }
+
+function metEnGrasJourActuel() {
+  const { isoYear, isoWeek } = getISOYearAndWeek(new Date());
+
+  // remplace les textes entre {{}} par leur correspondance
+  const placeholdersToReplace = {
+    SEMAINE: isoWeek,
+    AAAA: isoYear
+  };
+
+  const sheetName = interpolate(NOM_FEUILLES, placeholdersToReplace);
+
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+  if (!sheet) {
+    throw new Error(`La feuille "${sheetName}" n'existe pas.`);
+  }
+
+  const day = DAYS[new Date().getDay()];
+
+  const dayRange = sheet.getRange(CFG.dayRange);
+  const values = dayRange.getDisplayValues();
+
+  if (values.length !== 1) {
+    throw new Error("CFG.dayRange doit être une plage sur une seule ligne.");
+  }
+
+  dayRange.setFontWeights([
+    values[0].map(v =>
+      v.trim().toUpperCase() === day ? "bold" : "normal"
+    )
+  ]);
+}

@@ -33,6 +33,17 @@ logObject("Configuration", CFG);
 // Nom des feuilles qui ne doivent pas être supprimées. 
 const FEUILLES_PROTEGEES = [CFG.templateSheetName, FEUILLE_CONFIGURATION];
 
+// Nom des jours. En MAJUSCULES et NE PAS modifier l'ordre (important).
+const DAYS = [
+  "DIMANCHE",
+  "LUNDI",
+  "MARDI",
+  "MERCREDI",
+  "JEUDI",
+  "VENDREDI",
+  "SAMEDI"
+];
+
 // Fonction pour créer un nouveau menu personnalisé.
 function creerMenuPersonnalise() {
   SpreadsheetApp.getUi().createMenu("Actions") // nom du menu
